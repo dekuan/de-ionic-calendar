@@ -1,9 +1,9 @@
 {
-    "name": "de-ionic-calendar",
+    "name": "ionic2-calendar",
     "version": "0.4.6",
-    "description": "ionic calendar component",
+    "description": "Ionic2 calendar component",
     "keywords": [
-        "ionic",
+        "Ionic2",
         "calendar"
     ],
     "author": {
@@ -12,7 +12,7 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/dekuan/de-ionic-calendar.git"
+        "url": "git+https://github.com/twinssbc/Ionic2-Calendar.git"
     },
     "scripts": {
         "build": "rm -rf dist && tsc && cp package.json dist/package.json",
