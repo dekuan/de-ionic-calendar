@@ -12,7 +12,7 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/twinssbc/Ionic2-Calendar.git"
+        "url": "git+https://github.com/dekuan/de-ionic-calendar.git"
     },
     "scripts": {
         "build": "rm -rf dist && tsc && cp package.json dist/package.json",
