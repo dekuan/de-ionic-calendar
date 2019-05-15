@@ -1,9 +1,9 @@
 {
     "name": "de-ionic-calendar",
-    "version": "0.4.6",
-    "description": "Ionic2 calendar component",
+    "version": "0.4.8",
+    "description": "ionic calendar component",
     "keywords": [
-        "Ionic2",
+        "ionic",
         "calendar"
     ],
     "author": {
