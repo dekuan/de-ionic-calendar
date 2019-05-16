@@ -4,6 +4,8 @@ import {Subscription} from 'rxjs/Subscription';
 import {CalendarService} from './calendar.service';
 
 
+
+
 export interface IEvent
 {
 	allDay		: boolean;	//	all day ?
@@ -11,6 +13,8 @@ export interface IEvent
 	startTime	: Date;		//	start time UTC
 	title		: string;	//	title
 	ids		: string;	//	unique identity string
+	createTime	: Date;		//	created time
+	updateTime	: Date;		//	latest updated time
 }
 
 export interface IRange
