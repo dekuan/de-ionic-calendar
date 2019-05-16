@@ -18,15 +18,15 @@ version 0.4.x depends on Ionic 3.9.2 version onwards.
 
 # Usage
 
-Install: `npm install ionic2-calendar --save`
+Install: `npm install de-ionic-calendar --save`
 
-Import the ionic2-calendar module:
+Import the de-ionic-calendar module:
 
 ``` typescript
 import { NgModule } from '@angular/core';
 import { IonicApp, IonicModule } from 'ionic-angular';
 import { MyApp } from './app/app.component';
-import { NgCalendarModule  } from 'ionic2-calendar';
+import { NgCalendarModule  } from 'de-ionic-calendar';
 
 
 @NgModule({
@@ -48,7 +48,7 @@ export class AppModule {}
 If you are using PageModule, you need to import the NgCalendarModule in your page module
 
 ``` typescript
-import { NgCalendarModule  } from 'ionic2-calendar';
+import { NgCalendarModule  } from 'de-ionic-calendar';
 
 @NgModule({
   declarations: [
@@ -90,10 +90,10 @@ Add below lines in *main.prod.ts*
 
 
 ``` typescript
-import { CalendarComponent } from 'ionic2-calendar/calendar';
-import { MonthViewComponent } from 'ionic2-calendar/monthview';
-import { WeekViewComponent } from 'ionic2-calendar/weekview';
-import { DayViewComponent } from 'ionic2-calendar/dayview';
+import { CalendarComponent } from 'de-ionic-calendar/calendar';
+import { MonthViewComponent } from 'de-ionic-calendar/monthview';
+import { WeekViewComponent } from 'de-ionic-calendar/weekview';
+import { DayViewComponent } from 'de-ionic-calendar/dayview';
 ```
 
 
@@ -585,7 +585,7 @@ Indicates the event is allDay event or regular event
 When this method is called, the calendar will be forced to reload the events in the eventSource array. This is only necessary when you directly modify the element in the eventSource array.
 
 ``` typescript
-import { CalendarComponent } from "ionic2-calendar/calendar";
+import { CalendarComponent } from "de-ionic-calendar/calendar";
 
 @Component({
     selector: 'page-home',
