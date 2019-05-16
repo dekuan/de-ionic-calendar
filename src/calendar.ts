@@ -8,14 +8,61 @@ import {CalendarService} from './calendar.service';
 
 export interface IEvent
 {
-	allDay		: boolean;	//	all day ?
-	endTime		: Date;		//	end time UTC
-	startTime	: Date;		//	start time UTC
-	title		: string;	//	title
-	ids		: string;	//	unique identity string
 	createTime	: Date;		//	created time
 	updateTime	: Date;		//	latest updated time
+	allDay		: boolean;	//	all day ?
+	startTime	: Date;		//	start time UTC
+	endTime		: Date;		//	end time UTC
+	title		: string;	//	title
+	ids		: string;	//	unique identity string
 }
+export class IEvent
+{
+	constructor( vCalEvent ?: any )
+	{
+		this.createTime	= null;
+		this.updateTime	= null;
+		this.allDay	= false;
+		this.startTime	= null;
+		this.endTime	= null;
+		this.title	= null;
+		this.ids	= null;
+
+		if ( IEvent.isValid( vCalEvent ) )
+		{
+			//
+			//	A Unix Time Stamp which is an integer value representing
+			//	the number of milliseconds since January 1, 1970, 00:00:00 UTC (the Unix epoch),
+			//	with leap seconds ignored.
+			//	Keep in mind that most Unix timestamp functions are only accurate to the nearest second.
+			//
+			this.createTime	= new Date( vCalEvent.createTime.getTime() );
+			this.updateTime	= new Date( vCalEvent.updateTime.getTime() );
+			this.allDay	= vCalEvent.allDay;
+			this.startTime	= new Date( vCalEvent.startTime.getTime() );
+			this.endTime	= new Date( vCalEvent.endTime.getTime() );
+
+			this.title	= vCalEvent.title;
+			this.ids	= vCalEvent.ids;
+		}
+	}
+
+	static isValid( pstCalEvent : any )
+	{
+		return ( null !== pstCalEvent && 'object' === typeof pstCalEvent ) &&
+			pstCalEvent.createTime instanceof Date &&
+			pstCalEvent.updateTime instanceof Date &&
+			'boolean' === typeof pstCalEvent.allDay &&
+			pstCalEvent.startTime instanceof Date &&
+			pstCalEvent.endTime instanceof Date &&
+			'string' === typeof pstCalEvent.title
+		;
+	}
+}
+
+
+
+
 
 export interface IRange
 {
