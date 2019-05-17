@@ -206,7 +206,7 @@ import {IMonthViewDisplayEventTemplateContext} from "./calendar";
 		}
 
 		.table-bordered {
-			border: 1px solid #ddd;
+			/*border: 1px solid #ddd;*/
 		}
 
 		.table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th,
@@ -223,16 +223,16 @@ import {IMonthViewDisplayEventTemplateContext} from "./calendar";
 		}
 
 		.monthview-primary-with-event {
-			background-color: #3a87ad;
+			/*background-color: #3a87ad;*/
 			color: white;
 		}
 
 		.monthview-current {
-			background-color: #f0f0f0;
+			/*background-color: #f0f0f0;*/
 		}
 
 		.monthview-selected {
-			background-color: #009900;
+			/*background-color: #009900;*/
 			color: white;
 		}
 
@@ -251,7 +251,7 @@ import {IMonthViewDisplayEventTemplateContext} from "./calendar";
 		}
 
 		.monthview-secondary-with-event {
-			background-color: #d9edf7;
+			/*background-color: #d9edf7;*/
 		}
 
 		::-webkit-scrollbar,
