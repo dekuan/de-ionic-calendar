@@ -307,133 +307,173 @@ export class MonthViewComponent implements ICalendarComponent, OnInit, OnChanges
 	constructor(private calendarService: CalendarService) {
 	}
 
-	ngOnInit() {
-		if (this.dateFormatter && this.dateFormatter.formatMonthViewDay) {
+	ngOnInit()
+	{
+		if ( this.dateFormatter && this.dateFormatter.formatMonthViewDay )
+		{
 			this.formatDayLabel = this.dateFormatter.formatMonthViewDay;
-		} else {
-			let dayLabelDatePipe = new DatePipe('en-US');
-			this.formatDayLabel = function (date: Date) {
-				return dayLabelDatePipe.transform(date, this.formatDay);
+		}
+		else
+		{
+			let dayLabelDatePipe = new DatePipe( 'en-US' );
+			this.formatDayLabel = function ( date: Date )
+			{
+				return dayLabelDatePipe.transform( date, this.formatDay );
 			};
 		}
 
-		if (this.dateFormatter && this.dateFormatter.formatMonthViewDayHeader) {
+		if ( this.dateFormatter && this.dateFormatter.formatMonthViewDayHeader )
+		{
 			this.formatDayHeaderLabel = this.dateFormatter.formatMonthViewDayHeader;
-		} else {
+		}
+		else
+		{
 			let datePipe = new DatePipe(this.locale);
-			this.formatDayHeaderLabel = function (date: Date) {
-				return datePipe.transform(date, this.formatDayHeader);
+			this.formatDayHeaderLabel = function ( date: Date )
+			{
+				return datePipe.transform( date, this.formatDayHeader );
 			};
 		}
 
-		if (this.dateFormatter && this.dateFormatter.formatMonthViewTitle) {
+		if ( this.dateFormatter && this.dateFormatter.formatMonthViewTitle )
+		{
 			this.formatTitle = this.dateFormatter.formatMonthViewTitle;
-		} else {
-			let datePipe = new DatePipe(this.locale);
-			this.formatTitle = function (date: Date) {
-				return datePipe.transform(date, this.formatMonthTitle);
+		}
+		else
+		{
+			let datePipe = new DatePipe( this.locale );
+			this.formatTitle = function ( date: Date )
+			{
+				return datePipe.transform( date, this.formatMonthTitle );
 			};
 		}
 
-		if (this.lockSwipeToPrev) {
-			this.slider.lockSwipeToPrev(true);
+		if ( this.lockSwipeToPrev )
+		{
+			this.slider.lockSwipeToPrev( true );
 		}
 
-		if (this.lockSwipes) {
-			this.slider.lockSwipes(true);
+		if ( this.lockSwipes )
+		{
+			this.slider.lockSwipes( true );
 		}
 
 		this.refreshView();
 		this.inited = true;
 
-		this.currentDateChangedFromParentSubscription = this.calendarService.currentDateChangedFromParent$.subscribe(currentDate => {
+		this.currentDateChangedFromParentSubscription = this.calendarService.currentDateChangedFromParent$.subscribe(currentDate =>
+		{
 			this.refreshView();
 		});
-
-		this.eventSourceChangedSubscription = this.calendarService.eventSourceChanged$.subscribe(() => {
+		this.eventSourceChangedSubscription = this.calendarService.eventSourceChanged$.subscribe(() =>
+		{
 			this.onDataLoaded();
 		});
 	}
 
-	ngOnDestroy() {
-		if (this.currentDateChangedFromParentSubscription) {
+	ngOnDestroy()
+	{
+		if ( this.currentDateChangedFromParentSubscription )
+		{
 			this.currentDateChangedFromParentSubscription.unsubscribe();
 			this.currentDateChangedFromParentSubscription = null;
 		}
 
-		if (this.eventSourceChangedSubscription) {
+		if ( this.eventSourceChangedSubscription )
+		{
 			this.eventSourceChangedSubscription.unsubscribe();
 			this.eventSourceChangedSubscription = null;
 		}
 	}
 
-	ngOnChanges(changes: SimpleChanges) {
-		if (!this.inited) return;
+	ngOnChanges( changes : SimpleChanges )
+	{
+		if ( ! this.inited )
+			return;
 
 		let eventSourceChange = changes['eventSource'];
-		if (eventSourceChange && eventSourceChange.currentValue) {
+		if ( eventSourceChange && eventSourceChange.currentValue )
+		{
 			this.onDataLoaded();
 		}
 
 		let lockSwipeToPrev = changes['lockSwipeToPrev'];
-		if (lockSwipeToPrev) {
-			this.slider.lockSwipeToPrev(lockSwipeToPrev.currentValue);
+		if ( lockSwipeToPrev )
+		{
+			this.slider.lockSwipeToPrev( lockSwipeToPrev.currentValue );
 		}
 
 		let lockSwipes = changes['lockSwipes'];
-		if (lockSwipes) {
-			this.slider.lockSwipes(lockSwipes.currentValue);
+		if ( lockSwipes )
+		{
+			this.slider.lockSwipes( lockSwipes.currentValue );
 		}
 	}
 
-	ngAfterViewInit() {
+	ngAfterViewInit()
+	{
 		let title = this.getTitle();
-		this.onTitleChanged.emit(title);
+		this.onTitleChanged.emit( title );
 	}
 
-	onSlideChanged() {
-		if (this.callbackOnInit) {
+	onSlideChanged()
+	{
+		if ( this.callbackOnInit )
+		{
 			this.callbackOnInit = false;
 			return;
 		}
 
-		let currentSlideIndex = this.slider.getActiveIndex(),
-			direction = 0,
-			currentViewIndex = this.currentViewIndex;
+		let currentSlideIndex	= this.slider.getActiveIndex();
+		let direction		= 0;
+		let currentViewIndex	= this.currentViewIndex;
 
-		currentSlideIndex = (currentSlideIndex + 2) % 3;
-		if (currentSlideIndex - currentViewIndex === 1) {
+		currentSlideIndex	= ( currentSlideIndex + 2 ) % 3;
+		if ( currentSlideIndex - currentViewIndex === 1 )
+		{
 			direction = 1;
-		} else if (currentSlideIndex === 0 && currentViewIndex === 2) {
+		}
+		else if ( currentSlideIndex === 0 && currentViewIndex === 2 )
+		{
 			direction = 1;
-			this.slider.slideTo(1, 0, false);
-		} else if (currentViewIndex - currentSlideIndex === 1) {
+			this.slider.slideTo( 1, 0, false );
+		}
+		else if ( currentViewIndex - currentSlideIndex === 1 )
+		{
 			direction = -1;
-		} else if (currentSlideIndex === 2 && currentViewIndex === 0) {
+		}
+		else if ( currentSlideIndex === 2 && currentViewIndex === 0 )
+		{
 			direction = -1;
 			this.slider.slideTo(3, 0, false);
 		}
+
 		this.currentViewIndex = currentSlideIndex;
-		this.move(direction);
+		this.move( direction );
 	}
 
-	move(direction: number) {
-		if (direction === 0) return;
+	move( direction : number )
+	{
+		if ( direction === 0 )
+			return;
 
 		this.direction = direction;
-		if (!this.moveOnSelected) {
-			let adjacentDate = this.calendarService.getAdjacentCalendarDate(this.mode, direction);
-			this.calendarService.setCurrentDate(adjacentDate);
+		if ( ! this.moveOnSelected )
+		{
+			let adjacentDate = this.calendarService.getAdjacentCalendarDate( this.mode, direction );
+			this.calendarService.setCurrentDate( adjacentDate );
 		}
 		this.refreshView();
 		this.direction = 0;
 		this.moveOnSelected = false;
 	}
 
-	createDateObject(date: Date): IMonthViewRow {
+	createDateObject( date : Date ): IMonthViewRow
+	{
 		let disabled = false;
-		if (this.markDisabled) {
-			disabled = this.markDisabled(date);
+		if ( this.markDisabled )
+		{
+			disabled = this.markDisabled( date );
 		}
 
 		return {
@@ -445,96 +485,120 @@ export class MonthViewComponent implements ICalendarComponent, OnInit, OnChanges
 		};
 	}
 
-	static getDates(startDate: Date, n: number): Date[] {
-		let dates = new Array(n),
-			current = new Date(startDate.getTime()),
-			i = 0;
-		current.setHours(12); // Prevent repeated dates because of timezone bug
-		while (i < n) {
-			dates[i++] = new Date(current.getTime());
-			current.setDate(current.getDate() + 1);
+	static getDates( startDate : Date, n : number ): Date[]
+	{
+		let dates = new Array( n );
+		let current = new Date( startDate.getTime() );
+		let i = 0;
+
+		current.setHours( 12 );	//	Prevent repeated dates because of timezone bug
+		while ( i < n )
+		{
+			dates[i++] = new Date( current.getTime() );
+			current.setDate( current.getDate() + 1 );
 		}
 		return dates;
 	}
 
-	getViewData(startTime: Date): IMonthView {
-		let startDate = startTime,
-			date = startDate.getDate(),
-			month = (startDate.getMonth() + (date !== 1 ? 1 : 0)) % 12;
+	getViewData( startTime : Date ): IMonthView
+	{
+		let startDate	= startTime;
+		let date	= startDate.getDate();
+		let month	= ( startDate.getMonth() + ( date !== 1 ? 1 : 0 ) ) % 12;
 
-		let dates = MonthViewComponent.getDates(startDate, 42);
-		let days: IMonthViewRow[] = [];
-		for (let i = 0; i < 42; i++) {
-			let dateObject = this.createDateObject(dates[i]);
-			dateObject.secondary = dates[i].getMonth() !== month;
-			days[i] = dateObject;
+		let dates	= MonthViewComponent.getDates( startDate, 42 );
+		let days : IMonthViewRow[] = [];
+
+		for ( let i = 0; i < 42; i++ )
+		{
+			let dateObject		= this.createDateObject( dates[ i ] );
+			dateObject.secondary	= dates[i].getMonth() !== month;
+			days[ i ]		= dateObject;
 		}
 
 		let dayHeaders: string[] = [];
-		for (let i = 0; i < 7; i++) {
-			dayHeaders.push(this.formatDayHeaderLabel(days[i].date));
+		for ( let i = 0; i < 7; i++ )
+		{
+			dayHeaders.push( this.formatDayHeaderLabel( days[ i ].date ) );
 		}
+
 		return {
 			dates: days,
 			dayHeaders: dayHeaders
 		};
 	}
 
-	getHighlightClass(date: IMonthViewRow): string {
+	getHighlightClass( date : IMonthViewRow ) : string
+	{
 		let className = '';
 
-		if (date.hasEvent) {
-			if (date.secondary) {
+		if ( date.hasEvent )
+		{
+			if ( date.secondary )
+			{
 				className = 'monthview-secondary-with-event';
-			} else {
+			}
+			else
+			{
 				className = 'monthview-primary-with-event';
 			}
 		}
 
-		if (date.selected) {
-			if (className) {
+		if ( date.selected )
+		{
+			if ( className )
+			{
 				className += ' ';
 			}
 			className += 'monthview-selected';
 		}
 
-		if (date.current) {
-			if (className) {
+		if ( date.current )
+		{
+			if ( className )
+			{
 				className += ' ';
 			}
 			className += 'monthview-current';
 		}
 
-		if (date.secondary) {
-			if (className) {
+		if ( date.secondary )
+		{
+			if ( className )
+			{
 				className += ' ';
 			}
 			className += 'text-muted';
 		}
 
-		if (date.disabled) {
-			if (className) {
+		if ( date.disabled )
+		{
+			if ( className )
+			{
 				className += ' ';
 			}
 			className += 'monthview-disabled';
 		}
+
 		return className;
 	}
 
-	getRange(currentDate: Date): IRange {
-		let year = currentDate.getFullYear(),
-			month = currentDate.getMonth(),
-			firstDayOfMonth = new Date(year, month, 1),
-			difference = this.startingDayMonth - firstDayOfMonth.getDay(),
-			numDisplayedFromPreviousMonth = (difference > 0) ? 7 - difference : -difference,
-			startDate = new Date(firstDayOfMonth.getTime());
+	getRange( currentDate : Date ) : IRange
+	{
+		let year = currentDate.getFullYear();
+		let month = currentDate.getMonth();
+		let firstDayOfMonth = new Date(year, month, 1);
+		let difference = this.startingDayMonth - firstDayOfMonth.getDay();
+		let numDisplayedFromPreviousMonth = (difference > 0) ? 7 - difference : -difference;
+		let startDate = new Date( firstDayOfMonth.getTime() );
 
-		if (numDisplayedFromPreviousMonth > 0) {
-			startDate.setDate(-numDisplayedFromPreviousMonth + 1);
+		if ( numDisplayedFromPreviousMonth > 0 )
+		{
+			startDate.setDate( -numDisplayedFromPreviousMonth + 1 );
 		}
 
-		let endDate = new Date(startDate.getTime());
-		endDate.setDate(endDate.getDate() + 42);
+		let endDate = new Date( startDate.getTime() );
+		endDate.setDate( endDate.getDate() + 42 );
 
 		return {
 			startTime: startDate,
@@ -542,232 +606,307 @@ export class MonthViewComponent implements ICalendarComponent, OnInit, OnChanges
 		};
 	}
 
-	onDataLoaded() {
-		let range = this.range,
-			eventSource = this.eventSource,
-			len = eventSource ? eventSource.length : 0,
-			startTime = range.startTime,
-			endTime = range.endTime,
-			utcStartTime = new Date(Date.UTC(startTime.getFullYear(), startTime.getMonth(), startTime.getDate())),
-			utcEndTime = new Date(Date.UTC(endTime.getFullYear(), endTime.getMonth(), endTime.getDate())),
-			currentViewIndex = this.currentViewIndex,
-			dates = this.views[currentViewIndex].dates,
-			oneDay = 86400000,
-			eps = 0.0006;
+	onDataLoaded()
+	{
+		let range		= this.range;
+		let eventSource		= this.eventSource;
+		let len			= eventSource ? eventSource.length : 0;
+		let startTime		= range.startTime;
+		let endTime		= range.endTime;
+		let utcStartTime	= new Date(Date.UTC(startTime.getFullYear(), startTime.getMonth(), startTime.getDate()));
+		let utcEndTime		= new Date(Date.UTC(endTime.getFullYear(), endTime.getMonth(), endTime.getDate()));
+		let currentViewIndex	= this.currentViewIndex;
+		let dates		= this.views[currentViewIndex].dates;
+		let oneDay		= 86400000;
+		let eps			= 0.0006;
 
-		for (let r = 0; r < 42; r += 1) {
-			if (dates[r].hasEvent) {
-				dates[r].hasEvent = false;
-				dates[r].events = [];
+		for ( let r = 0; r < 42; r += 1 )
+		{
+			if ( dates[ r ].hasEvent )
+			{
+				dates[ r ].hasEvent	= false;
+				dates[ r ].events	= [];
 			}
 		}
 
-		for (let i = 0; i < len; i += 1) {
-			let event = eventSource[i],
-				eventStartTime = new Date(event.startTime.getTime()),
-				eventEndTime = new Date(event.endTime.getTime()),
-				st: Date,
-				et: Date;
+		for ( let i = 0; i < len; i += 1 )
+		{
+			let event		= eventSource[ i ];
+			let eventStartTime	= new Date(event.startTime.getTime());
+			let eventEndTime	= new Date(event.endTime.getTime());
+			let st: Date;
+			let et: Date;
 
-			if (event.allDay) {
-				if (eventEndTime <= utcStartTime || eventStartTime >= utcEndTime) {
+			if ( event.allDay )
+			{
+				if ( eventEndTime <= utcStartTime || eventStartTime >= utcEndTime )
+				{
 					continue;
-				} else {
+				}
+				else
+				{
 					st = utcStartTime;
 					et = utcEndTime;
 				}
-			} else {
-				if (eventEndTime <= startTime || eventStartTime >= endTime) {
+			}
+			else
+			{
+				if ( eventEndTime <= startTime || eventStartTime >= endTime )
+				{
 					continue;
-				} else {
+				}
+				else
+				{
 					st = startTime;
 					et = endTime;
 				}
 			}
 
-			let timeDiff: number;
-			let timeDifferenceStart: number;
-			if (eventStartTime <= st) {
+			let timeDiff : number;
+			let timeDifferenceStart : number;
+			if ( eventStartTime <= st )
+			{
 				timeDifferenceStart = 0;
-			} else {
+			}
+			else
+			{
 				timeDiff = eventStartTime.getTime() - st.getTime();
-				if (!event.allDay) {
-					timeDiff = timeDiff - (eventStartTime.getTimezoneOffset() - st.getTimezoneOffset()) * 60000;
+				if ( ! event.allDay )
+				{
+					timeDiff = timeDiff - ( eventStartTime.getTimezoneOffset() - st.getTimezoneOffset() ) * 60000;
 				}
 				timeDifferenceStart = timeDiff / oneDay;
 			}
 
-			let timeDifferenceEnd: number;
-			if (eventEndTime >= et) {
-				timeDiff = et.getTime() - st.getTime();
-				if (!event.allDay) {
-					timeDiff = timeDiff - (et.getTimezoneOffset() - st.getTimezoneOffset()) * 60000;
+			let timeDifferenceEnd : number;
+			if ( eventEndTime >= et )
+			{
+				timeDiff	= et.getTime() - st.getTime();
+				if ( ! event.allDay )
+				{
+					timeDiff = timeDiff - ( et.getTimezoneOffset() - st.getTimezoneOffset() ) * 60000;
 				}
 				timeDifferenceEnd = timeDiff / oneDay;
-			} else {
+			}
+			else
+			{
 				timeDiff = eventEndTime.getTime() - st.getTime();
-				if (!event.allDay) {
+				if ( ! event.allDay )
+				{
 					timeDiff = timeDiff - (eventEndTime.getTimezoneOffset() - st.getTimezoneOffset()) * 60000;
 				}
 				timeDifferenceEnd = timeDiff / oneDay;
 			}
 
-			let index = Math.floor(timeDifferenceStart);
-			while (index < timeDifferenceEnd - eps) {
-				dates[index].hasEvent = true;
-				let eventSet = dates[index].events;
-				if (eventSet) {
-					eventSet.push(event);
-				} else {
-					eventSet = [];
-					eventSet.push(event);
-					dates[index].events = eventSet;
+			let index	= Math.floor( timeDifferenceStart );
+
+			while ( index < timeDifferenceEnd - eps )
+			{
+				dates[ index ].hasEvent	= true;
+				let eventSet		= dates[ index ].events;
+
+				if ( eventSet )
+				{
+					eventSet.push( event );
+				}
+				else
+				{
+					eventSet	= [];
+					eventSet.push( event );
+					dates[ index ].events = eventSet;
 				}
 				index += 1;
 			}
 		}
 
-		for (let r = 0; r < 42; r += 1) {
-			if (dates[r].hasEvent) {
-				dates[r].events.sort(this.compareEvent);
+		for ( let r = 0; r < 42; r += 1 )
+		{
+			if ( dates[ r ].hasEvent )
+			{
+				dates[ r ].events.sort( this.compareEvent );
 			}
 		}
 
-		if (this.autoSelect) {
+		if ( this.autoSelect )
+		{
 			let findSelected = false;
-			for (let r = 0; r < 42; r += 1) {
-				if (dates[r].selected) {
-					this.selectedDate = dates[r];
+			for ( let r = 0; r < 42; r += 1 )
+			{
+				if ( dates[ r ].selected )
+				{
+					this.selectedDate = dates[ r ];
 					findSelected = true;
 					break;
 				}
 			}
 
-			if (findSelected) {
-				this.onTimeSelected.emit({
-					selectedTime: this.selectedDate.date,
-					events: this.selectedDate.events,
-					disabled: this.selectedDate.disabled
+			if ( findSelected )
+			{
+				this.onTimeSelected.emit(
+				{
+					selectedTime	: this.selectedDate.date,
+					events		: this.selectedDate.events,
+					disabled	: this.selectedDate.disabled
 				});
 			}
 		}
 	};
 
-	refreshView() {
-		this.range = this.getRange(this.calendarService.currentDate);
+	refreshView()
+	{
+		this.range	= this.getRange( this.calendarService.currentDate );
 
-		if (this.inited) {
+		if ( this.inited )
+		{
 			let title = this.getTitle();
-			this.onTitleChanged.emit(title);
+			this.onTitleChanged.emit( title );
 		}
-		this.calendarService.populateAdjacentViews(this);
-		this.updateCurrentView(this.range.startTime, this.views[this.currentViewIndex]);
-		this.calendarService.rangeChanged(this);
+
+		this.calendarService.populateAdjacentViews( this );
+		this.updateCurrentView( this.range.startTime, this.views[ this.currentViewIndex ] );
+		this.calendarService.rangeChanged( this );
 	}
 
-	getTitle(): string {
-		let currentViewStartDate = this.range.startTime,
-			date = currentViewStartDate.getDate(),
-			month = (currentViewStartDate.getMonth() + (date !== 1 ? 1 : 0)) % 12,
-			year = currentViewStartDate.getFullYear() + (date !== 1 && month === 0 ? 1 : 0),
-			headerDate = new Date(year, month, 1, 12, 0, 0, 0);
-		return this.formatTitle(headerDate);
+	getTitle(): string
+	{
+		let currentViewStartDate	= this.range.startTime;
+		let date	= currentViewStartDate.getDate();
+		let month	= (currentViewStartDate.getMonth() + (date !== 1 ? 1 : 0)) % 12;
+		let year	= currentViewStartDate.getFullYear() + (date !== 1 && month === 0 ? 1 : 0);
+		let headerDate	= new Date( year, month, 1, 12, 0, 0, 0 );
+
+		return this.formatTitle( headerDate );
 	}
 
-	private compareEvent(event1: IEvent, event2: IEvent): number {
-		if (event1.allDay) {
+	private compareEvent( event1 : IEvent, event2 : IEvent ) : number
+	{
+		if ( event1.allDay )
+		{
 			return 1;
-		} else if (event2.allDay) {
+		}
+		else if ( event2.allDay )
+		{
 			return -1;
-		} else {
-			return (event1.startTime.getTime() - event2.startTime.getTime());
+		}
+		else
+		{
+			return ( event1.startTime.getTime() - event2.startTime.getTime() );
 		}
 	}
 
-	select(viewDate: IMonthViewRow) {
-		if (!this.views) return;
+	select( viewDate : IMonthViewRow )
+	{
+		if ( ! this.views )
+			return;
 
-		let selectedDate = viewDate.date,
-			events = viewDate.events;
+		let selectedDate	= viewDate.date;
+		let events		= viewDate.events;
 
-		if (!viewDate.disabled) {
-			let dates = this.views[this.currentViewIndex].dates,
-				currentCalendarDate = this.calendarService.currentDate,
-				currentMonth = currentCalendarDate.getMonth(),
-				currentYear = currentCalendarDate.getFullYear(),
-				selectedMonth = selectedDate.getMonth(),
-				selectedYear = selectedDate.getFullYear(),
-				direction = 0;
+		if ( ! viewDate.disabled )
+		{
+			let dates = this.views[this.currentViewIndex].dates;
+			let currentCalendarDate = this.calendarService.currentDate;
+			let currentMonth = currentCalendarDate.getMonth();
+			let currentYear = currentCalendarDate.getFullYear();
+			let selectedMonth = selectedDate.getMonth();
+			let selectedYear = selectedDate.getFullYear();
+			let direction = 0;
 
-			if (currentYear === selectedYear) {
-				if (currentMonth !== selectedMonth) {
+			if ( currentYear === selectedYear )
+			{
+				if ( currentMonth !== selectedMonth )
+				{
 					direction = currentMonth < selectedMonth ? 1 : -1;
 				}
-			} else {
+			}
+			else
+			{
 				direction = currentYear < selectedYear ? 1 : -1;
 			}
 
-			this.calendarService.setCurrentDate(selectedDate);
-			if (direction === 0) {
-				let currentViewStartDate = this.range.startTime,
-					oneDay = 86400000,
-					selectedDayDifference = Math.floor((selectedDate.getTime() - currentViewStartDate.getTime() - (selectedDate.getTimezoneOffset() - currentViewStartDate.getTimezoneOffset()) * 60000) / oneDay);
+			this.calendarService.setCurrentDate( selectedDate );
+			if ( direction === 0 )
+			{
+				let currentViewStartDate	= this.range.startTime;
+				let oneDay			= 86400000;
+				let selectedDayDifference	= Math.floor(( selectedDate.getTime() - currentViewStartDate.getTime() - (selectedDate.getTimezoneOffset() - currentViewStartDate.getTimezoneOffset() ) * 60000 ) / oneDay );
 
-				for (let r = 0; r < 42; r += 1) {
-					dates[r].selected = false;
+				for ( let r = 0; r < 42; r += 1 )
+				{
+					dates[ r ].selected = false;
 				}
 
-				if (selectedDayDifference >= 0 && selectedDayDifference < 42) {
-					dates[selectedDayDifference].selected = true;
-					this.selectedDate = dates[selectedDayDifference];
+				if ( selectedDayDifference >= 0 && selectedDayDifference < 42 )
+				{
+					dates[ selectedDayDifference ].selected = true;
+					this.selectedDate = dates[ selectedDayDifference ];
 				}
-			} else {
+			}
+			else
+			{
 				this.moveOnSelected = true;
-				this.slideView(direction);
+				this.slideView( direction );
 			}
 		}
 
-		this.onTimeSelected.emit({selectedTime: selectedDate, events: events, disabled: viewDate.disabled});
+		this.onTimeSelected.emit(
+		{
+			selectedTime: selectedDate,
+			events: events,
+			disabled: viewDate.disabled
+		});
 	}
 
-	slideView(direction: number) {
-		if (direction === 1) {
+	slideView( direction : number )
+	{
+		if ( direction === 1 )
+		{
 			this.slider.slideNext();
-		} else if (direction === -1) {
+		}
+		else if ( direction === -1 )
+		{
 			this.slider.slidePrev();
 		}
 	}
 
-	updateCurrentView(currentViewStartDate: Date, view: IMonthView) {
-		let currentCalendarDate = this.calendarService.currentDate,
-			today = new Date(),
-			oneDay = 86400000,
-			selectedDayDifference = Math.floor((currentCalendarDate.getTime() - currentViewStartDate.getTime() - (currentCalendarDate.getTimezoneOffset() - currentViewStartDate.getTimezoneOffset()) * 60000) / oneDay),
-			currentDayDifference = Math.floor((today.getTime() - currentViewStartDate.getTime() - (today.getTimezoneOffset() - currentViewStartDate.getTimezoneOffset()) * 60000) / oneDay);
+	updateCurrentView( currentViewStartDate : Date, view : IMonthView )
+	{
+		let currentCalendarDate	= this.calendarService.currentDate;
+		let today		= new Date();
+		let oneDay		= 86400000;
+		let selectedDayDifference	= Math.floor((currentCalendarDate.getTime() - currentViewStartDate.getTime() - (currentCalendarDate.getTimezoneOffset() - currentViewStartDate.getTimezoneOffset()) * 60000) / oneDay);
+		let currentDayDifference	= Math.floor((today.getTime() - currentViewStartDate.getTime() - (today.getTimezoneOffset() - currentViewStartDate.getTimezoneOffset()) * 60000) / oneDay);
 
-		for (let r = 0; r < 42; r += 1) {
-			view.dates[r].selected = false;
+		for ( let r = 0; r < 42; r += 1 )
+		{
+			view.dates[ r ].selected = false;
 		}
 
-		if (selectedDayDifference >= 0 && selectedDayDifference < 42 && !view.dates[selectedDayDifference].disabled && (this.autoSelect || this.moveOnSelected)) {
-			view.dates[selectedDayDifference].selected = true;
-			this.selectedDate = view.dates[selectedDayDifference];
-		} else {
-			this.selectedDate = {
-				date: null,
-				events: [],
-				label: null,
-				secondary: null,
-				disabled: false
+		if ( selectedDayDifference >= 0 && selectedDayDifference < 42 && ! view.dates[ selectedDayDifference ].disabled && ( this.autoSelect || this.moveOnSelected ) )
+		{
+			view.dates[ selectedDayDifference ].selected = true;
+			this.selectedDate = view.dates[ selectedDayDifference ];
+		}
+		else
+		{
+			this.selectedDate =
+			{
+				date		: null,
+				events		: [],
+				label		: null,
+				secondary	: null,
+				disabled	: false
 			};
 		}
 
-		if (currentDayDifference >= 0 && currentDayDifference < 42) {
-			view.dates[currentDayDifference].current = true;
+		if ( currentDayDifference >= 0 && currentDayDifference < 42 )
+		{
+			view.dates[ currentDayDifference ].current = true;
 		}
 	}
 
-	eventSelected(event: IEvent) {
-		this.onEventSelected.emit(event);
+	eventSelected( event : IEvent )
+	{
+		this.onEventSelected.emit( event );
 	}
 }
