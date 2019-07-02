@@ -446,7 +446,7 @@ export class CalendarComponent implements OnInit
 		}
 
 		this._currentDate = val;
-		this.calendarService.setCurrentDate( val, true );
+		this.m_oCalendarService.setCurrentDate( val, true );
 		this.onCurrentDateChanged.emit( this._currentDate );
 	}
 
@@ -503,15 +503,17 @@ export class CalendarComponent implements OnInit
 	private hourSegments = 1;
 	private currentDateChangedFromChildrenSubscription: Subscription;
 
-	constructor(private calendarService: CalendarService, @Inject(LOCALE_ID) private appLocale: string) {
-		this.locale = appLocale;
+	constructor(private m_oCalendarService : CalendarService,
+		    @Inject(LOCALE_ID) private m_sAppLocale : string)
+	{
+		this.locale = m_sAppLocale;
 	}
 
 	ngOnInit()
 	{
 		if ( this.autoSelect )
 		{
-			if ( this.autoSelect.toString() === 'false' )
+			if ( 'false' === this.autoSelect.toString() )
 			{
 				this.autoSelect = false;
 			}
@@ -534,12 +536,12 @@ export class CalendarComponent implements OnInit
 		}
 		this.startHour	= parseInt( this.startHour.toString() );
 		this.endHour	= parseInt( this.endHour.toString() );
-		this.calendarService.queryMode	= this.queryMode;
+		this.m_oCalendarService.queryMode	= this.queryMode;
 
-		this.currentDateChangedFromChildrenSubscription = this.calendarService.currentDateChangedFromChildren$.subscribe(currentDate =>
+		this.currentDateChangedFromChildrenSubscription = this.m_oCalendarService.currentDateChangedFromChildren$.subscribe(currentDate =>
 		{
 			this._currentDate = currentDate;
-			this.onCurrentDateChanged.emit(currentDate);
+			this.onCurrentDateChanged.emit( currentDate );
 		});
 	}
 
@@ -552,25 +554,28 @@ export class CalendarComponent implements OnInit
 		}
 	}
 
-	rangeChanged( range: IRange )
+	rangeChanged( range : IRange )
 	{
 		this.onRangeChanged.emit( range );
 	}
 
-	eventSelected( event: IEvent )
+	eventSelected( event : IEvent )
 	{
-		this.onEventSelected.emit(event);
+		this.onEventSelected.emit( event );
 	}
 
-	timeSelected(timeSelected: ITimeSelected) {
-		this.onTimeSelected.emit(timeSelected);
+	timeSelected( timeSelected: ITimeSelected )
+	{
+		this.onTimeSelected.emit( timeSelected );
 	}
 
-	titleChanged(title: string) {
-		this.onTitleChanged.emit(title);
+	titleChanged( title : string )
+	{
+		this.onTitleChanged.emit( title );
 	}
 
-	loadEvents() {
-		this.calendarService.loadEvents();
+	loadEvents()
+	{
+		this.m_oCalendarService.loadEvents();
 	}
 }
