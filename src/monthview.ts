@@ -416,6 +416,15 @@ export class MonthViewComponent implements ICalendarComponent, OnInit, OnChanges
 
 	ngAfterViewInit()
 	{
+		setTimeout(() =>
+		{
+			if ( this.slider )
+			{
+				this.slider.enableKeyboardControl( false );
+			}
+		},300 );
+
+		//	...
 		let title = this.getTitle();
 		this.onTitleChanged.emit( title );
 	}

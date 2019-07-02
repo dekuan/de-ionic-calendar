@@ -1,3 +1,11 @@
+# npm publish
+1, npm run build-prod
+2, npm run copy_static_files_prod
+3, cd
+
+
+
+
 # Ionic2-Calendar directive
 
 Ionic2 calendar directive
