@@ -348,11 +348,15 @@ export class MonthViewComponent implements ICalendarComponent, OnInit, OnChanges
 			};
 		}
 
+		//
+		//	do not allow control by keyboard
+		//
+		this.slider.enableKeyboardControl( false );
+
 		if ( this.lockSwipeToPrev )
 		{
 			this.slider.lockSwipeToPrev( true );
 		}
-
 		if ( this.lockSwipes )
 		{
 			this.slider.lockSwipes( true );
